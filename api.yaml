@@ -1,0 +1,111 @@
+openapi: 3.0.0
+x-stoplight:
+  id: 3cw8r8h8gbvwd
+info:
+  title: SampleAPI
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /users:
+    post:
+      summary: POST /users
+      operationId: post-user
+      responses:
+        '200':
+          description: User Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                New User Bob Fellow:
+                  value:
+                    id: 1
+                    name: Bob
+                    age: 20
+                    gender: male
+        '400':
+          description: Bad Request
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                age:
+                  type: number
+                gender:
+                  type: string
+              required:
+                - name
+                - age
+                - gender
+            examples:
+              Create User Bob Fellow:
+                value:
+                  name: Bob
+                  age: 20
+                  gender: male
+        description: Post the necessary fields for the API to create a new user.
+      description: Create a new user.
+    get:
+      summary: GET /users
+      description: get all users
+      operationId: get-user
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: gender
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: ''
+  '/users/:userId':
+    get:
+      summary: GET /users/userId
+      description: get all users by id
+      operationId: get-user-by-id
+      responses:
+        '200':
+          description: OK
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: ''
+    parameters: []
+components:
+  schemas:
+    User:
+      title: User
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        age:
+          type: number
+          minimum: 10
+          maximum: 100
+        gender:
+          type: string
+          enum:
+            - male
+            - female
+            - others
+      required:
+        - id
+        - name
